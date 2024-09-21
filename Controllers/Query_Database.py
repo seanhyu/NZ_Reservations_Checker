@@ -1,12 +1,13 @@
 import boto3
 import Controllers.Web_Nav
 import Controllers.Email_Sender 
+from Configs import TABLE_NAME
 
 class Query_Database:
 
     def __init__(self):
         # access AWS DynamoDB
-        self.table = boto3.resource('dynamodb').Table('NZ_Great_Walks_Alerts_Emails') # Add your own AWS DynamoDB Table here
+        self.table = boto3.resource('dynamodb').Table(TABLE_NAME) 
     
     def add_to_database(self,current_query):
         # add current_query to the database
