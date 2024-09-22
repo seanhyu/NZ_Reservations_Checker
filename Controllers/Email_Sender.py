@@ -1,5 +1,5 @@
 import os
-from Configs import SENDGRID_KEY, FROM_EMAIL
+from configs import SENDGRID_KEY, FROM_EMAIL
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 

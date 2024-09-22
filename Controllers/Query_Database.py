@@ -1,7 +1,7 @@
 import boto3
-import Controllers.Web_Nav
-import Controllers.Email_Sender 
-from Configs import TABLE_NAME
+import Controllers.web_nav
+import Controllers.email_sender 
+from configs import TABLE_NAME
 
 class Query_Database:
 
@@ -41,7 +41,7 @@ class Query_Database:
         queries = self.get_database_queries()
 
         # initiate a web_browers object with the Great Walks bookings
-        web_browser = Controllers.Web_Nav.Web_Nav("https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx")
+        web_browser = Controllers.web_nav.Web_Nav("https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx")
         
         try:
             # check each query to see if the itinerary is available
@@ -57,7 +57,7 @@ class Query_Database:
                 try:
                     # if the itinerary is available, send the email and delete the query
                     if web_browser.check_if_available(trail_value,month,day,year,group_size):
-                        Controllers.Email_Sender.send_email(email)
+                        Controllers.email_sender.send_email(email)
                         self.delete_query(id)
 
                 except:

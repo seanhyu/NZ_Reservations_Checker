@@ -1,15 +1,15 @@
-import Controllers.Web_Nav
-import Controllers.Query_Database
-import Models.Query
+import Controllers.web_nav
+import Controllers.query_database
+import Models.query
 
 # Create instance of database
-db = Controllers.Query_Database.Query_Database()
+db = Controllers.query_database.Query_Database()
 
 # Ask if user wants to enter a new query
 add_data = input("Would you like to enter a new query? Enter 1 for yes, enter any other key for no: ")
 if add_data == "1":
 # Creat new instance of a query
-    current_query = Models.Query.Query()
+    current_query = Models.query.Query()
 
     # Prompt user for all required fields
     # If user supplies all fields, run the web automation
