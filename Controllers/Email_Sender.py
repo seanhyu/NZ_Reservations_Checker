@@ -7,7 +7,7 @@ from sendgrid.helpers.mail import Mail
 
 def send_email(email,track,month,day,year,size) -> bool:
     # draft contents of email
-    email_content = f"""<strong>Congratulations! There is a spot available for the {track} on {month}/{day}/{year} for {size} people!</strong>""" 
+    email_content = f"""<strong>Congratulations! There is a spot available for the {track} on {month}/{day}/{year} for {size} hiker(s)!</strong>""" 
 
     # drafts the email    
     message = Mail(
