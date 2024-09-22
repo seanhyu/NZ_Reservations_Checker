@@ -1,13 +1,57 @@
 import boto3
 import Controllers.web_nav
 import Controllers.email_sender 
+from datetime import date
 from configs import TABLE_NAME
+import Models.query
 
 class Query_Database:
 
     def __init__(self):
         # access AWS DynamoDB
         self.table = boto3.resource('dynamodb').Table(TABLE_NAME) 
+    
+    def add_query_to_db(self):
+        # ask if user wants to add an itinerary, if not then return
+        save_to_database = input("Would you like to enter a new itinerary? Enter 1 for yes, enter any other key for no: ")
+        if save_to_database != "1":
+            return
+        
+        # initiate a Query object
+        current_query = Models.query.Query()
+
+        # prompt user for all required fields, and if user supplies all fields, checks if the itinerary is available
+        if current_query.set_all_fields():
+            
+            web_browser = Controllers.web_nav.Web_Nav("https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx")
+            
+            try:
+                if web_browser.check_if_available(current_query.trail_value,current_query.month,current_query.day,current_query.year,current_query.group_size):
+                    print("Your itinerary was found, we will send an email with the available itinerary.")
+                    Controllers.email_sender.send_email(current_query.email,current_query.track,current_query.month,current_query.day,current_query.year,current_query.group_size)
+                else:
+                    add_to_db = input("Your itinerary was not available. Would you like to save the itinerary for future checking? Enter 1 for yes, enter any other key for no: ")
+                    if add_to_db == "1":
+                        self.add_to_database(current_query)
+            finally:
+                web_browser.close_chrome()
+        
+        # otherwise delete the object
+        else:    
+            del current_query
+    
+    def delete_query_from_db(self):
+        
+        delete_from_database = input("Would you like to remove an itinerary? Enter 1 for yes, enter any other key for no: ")
+        if delete_from_database != "1":
+            return
+        # initiate a Query object
+        current_query = Models.query.Query()
+
+        # prompt user for all required fields, and if user supplies all fields, add it to the database
+        if current_query.set_all_fields():
+            self.delete_query(current_query.query_id) 
+        del current_query
     
     def add_to_database(self,current_query):
         # add current_query to the database
@@ -30,10 +74,15 @@ class Query_Database:
         while 'LastEvaluatedKey' in response:
             response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
             data.extend(response['Items'])
+        
         return data
     
+    # removes an itinerary from the database
     def delete_query(self,id):
-        self.table.delete_item(Key={"NZGreatWalksAlerts": id})
+        try:
+            self.table.delete_item(Key={"NZGreatWalksAlerts": id})
+        except:
+            print("Itinerary not found!")
 
     
     def send_emails_if_available(self):
@@ -55,9 +104,13 @@ class Query_Database:
                 year = int(query["year"])
                 group_size = int(query["group_size"])
                 try:
+                    today = date.today()
+                    # if itinerary is in the past, delete it
+                    if year < today.year or year == today.year and (month < today.month or (month == today.month and day < today.day)):
+                        self.delete_query(id)
                     # if the itinerary is available, send the email and delete the query
-                    if web_browser.check_if_available(trail_value,month,day,year,group_size):
-                        Controllers.email_sender.send_email(email)
+                    elif web_browser.check_if_available(trail_value,month,day,year,group_size):
+                        Controllers.email_sender.send_email(email,track,month,day,year,group_size)
                         self.delete_query(id)
 
                 except:

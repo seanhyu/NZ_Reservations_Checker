@@ -5,14 +5,16 @@ from sendgrid.helpers.mail import Mail
 
 # this function attempts to send an email to the corresponding user if their specified itinerary is available
 
-def send_email(email) -> bool:
+def send_email(email,track,month,day,year,size) -> bool:
+    # draft contents of email
+    email_content = f"""<strong>Congratulations! There is a spot available for the {track} on {month}/{day}/{year} for {size} people!</strong>""" 
 
     # drafts the email    
     message = Mail(
         from_email= FROM_EMAIL,
         to_emails=email,
         subject='NZ Great Walks Spot Available!',
-        html_content='<strong>There is a spot available for your specified itinerary!</strong>')
+        html_content=email_content)
     
     # attempts to send the email
     try:

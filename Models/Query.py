@@ -26,9 +26,9 @@ class Query:
         # continuously prompts users for the track unless the user quits
         while try_again == "1":
             # attempt to set trail_value
-            track = input("What track do you want to check?")
+            track = input("What trail do you want to add/remove? ")
             if track not in trail_value_lib:
-                try_again = input("Invalid track. Enter 1 if you want to try again, otherwise enter 0.")
+                try_again = input("Invalid track. Enter 1 if you want to try again, otherwise enter 0. ")
             else:
                 self.track = track
                 self.trail_value = trail_value_lib[track]
@@ -43,9 +43,9 @@ class Query:
         while try_again == "1":
             # attempt to get date
             try:
-                self.month,self.day,self.year = map(int,input("Enter the date you want to check in the format MM-DD-YYYY").split("-"))
+                self.month,self.day,self.year = map(int,input("Enter the date you want to check in the format MM-DD-YYYY ").split("-"))
             except:
-                try_again = input("Invalid date format. Enter 1 if you want to try again, enter any other key to stop.")
+                try_again = input("Invalid date format. Enter 1 if you want to try again, enter any other key to stop. ")
                 continue
             today = date.today()
             if self.month in month_days and 0 <= self.year - today.year <= 1 and self.day > 0:
@@ -58,7 +58,7 @@ class Query:
                         if self.day <= month_days[self.month]:
                             return True
             # if function hasn't exited, then invalid input
-            try_again = input("Invalid date. Enter 1 if you want to try again, enter any other key to stop.")
+            try_again = input("Invalid date. Enter 1 if you want to try again, enter any other key to stop. ")
             self.month = self.day = self.year = 0
         return False
     
@@ -72,9 +72,9 @@ class Query:
                 if 0 < self.group_size <= 25:
                     return True
                 else:
-                    try_again = input("Invalid size. Enter 1 if you want to try again, enter any other key to stop.")
+                    try_again = input("Invalid size. Enter 1 if you want to try again, enter any other key to stop. ")
             except:
-                try_again = input("Invalid size. Enter 1 if you want to try again, enter any other key to stop.")
+                try_again = input("Invalid size. Enter 1 if you want to try again, enter any other key to stop. ")
         return False
     
 
@@ -96,11 +96,11 @@ class Query:
         try_again = "1"
         # continuously prompts users for the email unless the user quits
         while try_again == "1":
-            self.email = input("Enter the email you want your alerts sent to: ")  
+            self.email = input("Enter the email: ")  
             if self.is_valid_email():
                 return True
             else: 
-                try_again = input("Invalid email. Enter 1 if you want to try again, enter any other key to stop.")
+                try_again = input("Invalid email. Enter 1 if you want to try again, enter any other key to stop. ")
         return False
     
     # attempts to set all fields and returns if it was successful
