@@ -4,13 +4,13 @@
 # Features:
 * Allows users to input specific itineraries for any of the New Zealand Great Walks, and for any date in the future, along with an email that they would like to be alerted at
 * Stores information from all queries in an AWS Dynamodb database
-* Upon running, the program goes through all entries in the database and attempts to find availability by using Selenium to open a browser and input the specified itineraries and check the number of spots available for the given itinerary
-* If there are enough spots available for the given itinerary, the program uses SendGrid to email the user notifying them that their itinerary can be reserved, and then deletes their query from the database
+* Can be run in interactive mode or non-interactive mode: if in interactive mode, then program allows user to add or delete itineraries; in non-interactive mode, the program checks all itineraries in the database for availabilities 
+* If there are spots available for the given itinerary, the program uses SendGrid to email the user notifying them that their itinerary can be reserved, and then deletes their query from the database
   
 # How to Run:
 * Install Selenium, SendGrid, boto3
 * Create a file named "Configs.py"
 * Create a SendGrid account, set up email-sending capability based on an email of your choice, add the API key to the configs file with the variable name SENDGRID_KEY, add the email address you would like to have your emails sent from to the configs file with the variable name FROM_EMAIL, and add the corresponding files as indicated by SendGrid
 * Create an AWS account, set up a Dynamodb table, install the AWS Command Line Interface, and use the command "aws configure" to link your your AWS account to your current workstation. Then add your table name to your configs file.
-* Run the program and enter your itinerary and email address accordingly. The program will either email you if there are enough spots available for your itinerary, or store your query in the database for future checking
-* Configure your computer to run the script upon the computer's start-up
+* The program takes 3 arguments when running: "-interactive" takes in any non-zero number as interactive mode, "-repetitions" takes in a non-negative integer number of availability checks, and "-interval" takes in a non-negative integer number of minutes between availability checks
+* Configure your computer to run the script upon the computer's start-up in non-interactive mode so that it checks for availabilites in the background
