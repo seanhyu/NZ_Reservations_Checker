@@ -1,11 +1,12 @@
 import boto3
+from datetime import date
+
+from configs import TABLE_NAME
 import Controllers.web_nav
 import Controllers.email_sender 
-from datetime import date
-from configs import TABLE_NAME
 import Models.query
 
-class Query_Database:
+class QueryDatabase:
 
     def __init__(self):
         # access AWS DynamoDB
@@ -23,17 +24,19 @@ class Query_Database:
         # prompt user for all required fields, and if user supplies all fields, checks if the itinerary is available
         if current_query.set_all_fields():
             
-            web_browser = Controllers.web_nav.Web_Nav("https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx")
+            web_browser = Controllers.web_nav.WebNav("https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx")
             
             try:
-                if web_browser.check_if_available(current_query.trail_value,current_query.month,current_query.day,current_query.year,current_query.group_size):
+                found = web_browser.check_if_available(current_query.trail_value,current_query.month,current_query.day,current_query.year,current_query.group_size)
+                web_browser.close_chrome()
+                if found:
                     print("Your itinerary was found, we will send an email with the available itinerary.")
                     Controllers.email_sender.send_email(current_query.email,current_query.track,current_query.month,current_query.day,current_query.year,current_query.group_size)
                 else:
                     add_to_db = input("Your itinerary was not available. Would you like to save the itinerary for future checking? Enter 1 for yes, enter any other key for no: ")
                     if add_to_db == "1":
                         self.add_to_database(current_query)
-            finally:
+            except:
                 web_browser.close_chrome()
         
         # otherwise delete the object
@@ -41,17 +44,17 @@ class Query_Database:
             del current_query
     
     def delete_query_from_db(self):
-        
         delete_from_database = input("Would you like to remove an itinerary? Enter 1 for yes, enter any other key for no: ")
         if delete_from_database != "1":
             return
-        # initiate a Query object
-        current_query = Models.query.Query()
+        else:
+            # initiate a Query object
+            current_query = Models.query.Query()
 
-        # prompt user for all required fields, and if user supplies all fields, add it to the database
-        if current_query.set_all_fields():
-            self.delete_query(current_query.query_id) 
-        del current_query
+            # prompt user for all required fields, and if user supplies all fields, add it to the database
+            if current_query.set_all_fields():
+                self.delete_query(current_query.query_id) 
+            del current_query
     
     def add_to_database(self,current_query):
         # add current_query to the database
@@ -90,7 +93,7 @@ class Query_Database:
         queries = self.get_database_queries()
 
         # initiate a web_browers object with the Great Walks bookings
-        web_browser = Controllers.web_nav.Web_Nav("https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx")
+        web_browser = Controllers.web_nav.WebNav("https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx")
         
         try:
             # check each query to see if the itinerary is available

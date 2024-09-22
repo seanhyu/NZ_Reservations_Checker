@@ -1,7 +1,9 @@
 import os
-from configs import SENDGRID_KEY, FROM_EMAIL
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+
+from configs import SENDGRID_KEY, FROM_EMAIL
+
 
 # this function attempts to send an email to the corresponding user if their specified itinerary is available
 

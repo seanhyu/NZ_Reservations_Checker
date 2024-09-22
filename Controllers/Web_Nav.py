@@ -7,7 +7,7 @@ from selenium.common.exceptions import WebDriverException
 from datetime import date
 
 # this class runs the web automation process that checks if itineraries are available
-class Web_Nav:
+class WebNav:
 
     # initiates the web driver
     def __init__(self,url = ""):

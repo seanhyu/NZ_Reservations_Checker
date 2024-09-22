@@ -1,6 +1,7 @@
 from datetime import date
-import re
 import os
+import re
+
 
 
 # This class create instances of user itinerary queries
