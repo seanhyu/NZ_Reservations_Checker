@@ -10,7 +10,7 @@
 # How to Run:
 * Install Selenium, SendGrid, boto3
 * Create a file named "Configs.py"
-* Create a SendGrid account, set up email-sending capability based on an email of your choice, add the API key to the configs file with the variable name SENDGRID_KEY, and add the corresponding files as indicated by SendGrid
+* Create a SendGrid account, set up email-sending capability based on an email of your choice, add the API key to the configs file with the variable name SENDGRID_KEY, add the email address you would like to have your emails sent from to the configs file with the variable name FROM_EMAIL, and add the corresponding files as indicated by SendGrid
 * Create an AWS account, set up a Dynamodb table, install the AWS Command Line Interface, and use the command "aws configure" to link your your AWS account to your current workstation. Then add your table name to your configs file.
 * Run the program and enter your itinerary and email address accordingly. The program will either email you if there are enough spots available for your itinerary, or store your query in the database for future checking
 * Configure your computer to auto-run the program each time you start up the computer so that it checks everyday.

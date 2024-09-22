@@ -1,5 +1,5 @@
 import os
-from Configs import SENDGRID_KEY
+from Configs import SENDGRID_KEY, FROM_EMAIL
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
@@ -9,7 +9,7 @@ def send_email(email) -> bool:
 
     # drafts the email    
     message = Mail(
-        from_email='syu@180dc.org',
+        from_email= FROM_EMAIL,
         to_emails=email,
         subject='NZ Great Walks Spot Available!',
         html_content='<strong>There is a spot available for your specified itinerary!</strong>')
