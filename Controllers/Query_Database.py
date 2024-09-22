@@ -43,23 +43,28 @@ class Query_Database:
         # initiate a web_browers object with the Great Walks bookings
         web_browser = Controllers.Web_Nav.Web_Nav("https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx")
         
-        # check each query to see if the itinerary is available
-        for query in queries:
-            id = query["NZGreatWalksAlerts"]
-            email = query["email"]
-            track = query["track"]
-            trail_value = query["trail_value"]
-            month = int(query["month"])
-            day = int(query["day"])
-            year = int(query["year"])
-            group_size = int(query["group_size"])
-            try:
-                # if the itinerary is available, send the email and delete the query
-                if web_browser.check_if_available(trail_value,month,day,year,group_size):
-                    Controllers.Email_Sender.send_email(email)
-                    self.delete_query(id)
+        try:
+            # check each query to see if the itinerary is available
+            for query in queries:
+                id = query["NZGreatWalksAlerts"]
+                email = query["email"]
+                track = query["track"]
+                trail_value = query["trail_value"]
+                month = int(query["month"])
+                day = int(query["day"])
+                year = int(query["year"])
+                group_size = int(query["group_size"])
+                try:
+                    # if the itinerary is available, send the email and delete the query
+                    if web_browser.check_if_available(trail_value,month,day,year,group_size):
+                        Controllers.Email_Sender.send_email(email)
+                        self.delete_query(id)
 
-            except:
-                print("Failed to send emails")
-            # reset the search back to the first page to prepare for the next query
-            web_browser.reset('https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx')
+                except:
+                    print("Failed to send emails")
+                # reset the search back to the first page to prepare for the next query
+                web_browser.reset('https://bookings.doc.govt.nz/Web/Facilities/SearchViewGreatWalk.aspx')
+        
+        # Close Chrome once finished
+        finally:
+            web_browser.close_chrome()

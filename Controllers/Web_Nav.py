@@ -111,3 +111,10 @@ class Web_Nav:
             return spots >= size        
         except:
             return False
+    
+    def close_chrome(self):
+        try:
+            self.driver.quit()
+            return True
+        except:
+            return False

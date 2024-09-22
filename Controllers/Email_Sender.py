@@ -25,3 +25,4 @@ def send_email(email) -> bool:
     except Exception as e:
         print("Failed to send email", e)
         return False
+    

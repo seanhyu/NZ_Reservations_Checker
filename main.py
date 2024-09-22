@@ -21,3 +21,4 @@ if add_data == "1":
 
 # Checks all queries in the database for availability and sends emails to those with availabilities found
 all_queries = db.send_emails_if_available()
+
