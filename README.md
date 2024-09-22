@@ -12,5 +12,6 @@
 * Create a file named "Configs.py"
 * Create a SendGrid account, set up email-sending capability based on an email of your choice, add the API key to the configs file with the variable name SENDGRID_KEY, add the email address you would like to have your emails sent from to the configs file with the variable name FROM_EMAIL, and add the corresponding files as indicated by SendGrid
 * Create an AWS account, set up a Dynamodb table, install the AWS Command Line Interface, and use the command "aws configure" to link your your AWS account to your current workstation. Then add your table name to your configs file.
-* The program takes 3 arguments when running: "-interactive" takes in any non-zero number as interactive mode, "-repetitions" takes in a non-negative integer number of availability checks, and "-interval" takes in a non-negative integer number of minutes between availability checks
+* To run the program, use the command line to run the main.py file, along with 3 arguments: "-interactive" takes in any non-zero number as interactive mode, "-repetitions" takes in a non-negative integer number of availability checks, and "-interval" takes in a non-negative integer number of minutes between availability checks
+* (For example, run python3 main.py "-interactive" 1 "-repetitions" 2 "-interval" 60)
 * Configure your computer to run the script upon the computer's start-up in non-interactive mode so that it checks for availabilites in the background
